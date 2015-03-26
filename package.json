@@ -1,0 +1,16 @@
+{
+  "name": "coachella",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.12.3",
+    "instagram-node": "^0.5.6",
+    "less-middleware": "^2.0.1"
+  }
+}
