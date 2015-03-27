@@ -27,10 +27,11 @@ var server = app.listen(3000, function (req, res) {
 var posts = [];
 
 everyMinute();
+/*
 setInterval(function(){
 	everyMinute()
 }, 60000);
-
+*/
 
 function everyMinute(){
 
