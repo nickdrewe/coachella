@@ -44,7 +44,7 @@ function everyMinute(){
 	updatePosts(opt);
 
 	function updatePosts(opt){
-		ig.tag_media_recent('coachella', opt, function(err, medias, pagination, remaining, limit) {
+		ig.tag_media_recent('kitten', opt, function(err, medias, pagination, remaining, limit) {
 			//add media to posts
 			medias.forEach(function(media){
 
