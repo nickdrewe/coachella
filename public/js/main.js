@@ -119,11 +119,11 @@ angular.module('myApp', ['ngAnimate'])
 
 						var total = scope.images.length;
 						var start = width - 200;
-						if(total >= 8){
+						/*if(total >= 8){
 							start += 200 * (total-7);
-						}
+						}*/
 
-						for(var i=0; i<scope.images.length; i++){
+						for(var i=total-1; i>=0; i--){
 							scope.images[i].left = start;
 							start -= 200;
 						}
@@ -159,6 +159,7 @@ angular.module('myApp', ['ngAnimate'])
 						// if the position has changed, tween it with complete callback
 						TweenLite.to(elem.parent()[0], 1, {
 							x: newValue,
+							ease: Cubic.easeInOut,
 							onComplete: function(){
 								scope.cleanup();
 							}
