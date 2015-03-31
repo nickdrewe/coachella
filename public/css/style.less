@@ -36,11 +36,40 @@ body{
 }
 
 /*player*/
+.songlist{
+	display: none;
+}
+.playlist{
+	display: none;
+}
 .player{
 	position: fixed;
-	height: 400px;
+	height: 100px;
+	left: -5px;
+	right: -5px;
+	bottom: -28px;
+	background-color: rgba(255,255,255,.8);
+
+	-webkit-transform: rotateZ(2.5deg); /* Safari */
+	transform: translateZ(1px) rotateZ(2.5deg);
+}
+.player-foreground{
+	position: absolute;
+	top: 0px;
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
-	background-color: rgba(0,0,0,.8);
+}
+
+/*seek*/
+.seekBase{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+.seekLoad{
+	height: 100%;
+	background-color: #00ff00;
 }
