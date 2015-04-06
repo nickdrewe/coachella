@@ -12,8 +12,6 @@ angular.module('unCollage', [])
 				// initialisation
 				function initialiseRows(){
 
-					scope.added = 0;
-
 					// calculate the optimum number of rows and create them
 					var width = $window.innerWidth;
 					var height = $window.innerHeight - 100; // toolbar
@@ -50,7 +48,6 @@ angular.module('unCollage', [])
 							row = randInt(scope.rowData.length);
 						}						
 						scope.rowData[row].images.push(image);
-						scope.added++;
 					}
 				}
 
