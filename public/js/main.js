@@ -12,47 +12,91 @@ angular.module('myApp', ['ngAnimate'])
 		});
 
 	})
-	.controller('SoundCtrl', ['$scope', '$http', 'soundService', function ($scope, $http, soundService) {
+	.value('scKey', 'e1c2a174e148e7f9ef62cb7116c1c5fe')
+	.controller('SoundCtrl', ['$scope', '$http', 'soundService', 'scKey', function ($scope, $http, soundService, scKey) {	
+		$scope.sndSvc = soundService;
+		$scope.loaded = false;
+		$scope.playing = false;
+		$scope.currentTrack;
 
-		$scope.songs = [];
-		$scope.player = {
-			trackIndex: 0,
-			playing: false
-		}
+		var playlistUrl = 'https://api.soundcloud.com/playlists/72999862.json' + '?streamable=true&client_id=' + scKey;
+		$http.get(playlistUrl).success(function(data){
 
-		//grab a playlist
-		var url = 'https://api.soundcloud.com/playlists/72999862.json?client_id=e1c2a174e148e7f9ef62cb7116c1c5fe';
-		$http.get(url)
-		.success(function(data){
-			//add tracks to list of songs
-			for(i = 0; i < data.tracks.length; i++){
-				if(i < data.tracks.length - 1){
-					$scope.songs.push(data.tracks[i]);
-				} else {
-					//start player
-					console.log('playlist loaded');
-					console.log($scope.songs);
-
-					//load first track.
-					var url = $scope.songs[$scope.player.trackIndex].stream_url + '?client_id=e1c2a174e148e7f9ef62cb7116c1c5fe';
-					var mySound = soundManager.createSound({
-						id: $scope.player.trackIndex,
-						url: url
-					});
-					console.log('playing');
-					mySound.play();
+			var streamableTracks = [];
+			angular.forEach(data.tracks, function(track){
+				if(track.streamable){
+					streamableTracks.push(track);
 				}
-				
-			}
+			})
+			soundService.newPlayer(streamableTracks);
+			$scope.loaded = true;
 		});
-	}])
-	.service('soundService', function(player){
-		this.next = function(player){
-			$scope.player.trackIndex++;
-			var url = $scope.songs[$scope.player.trackIndex].stream_url + '?client_id=e1c2a174e148e7f9ef62cb7116c1c5fe';
-			player.url = url;
+
+		$scope.nextTrack = function(){
+			soundService.next();
 		}
-	})
+		$scope.pause = function(){
+			soundService.pause();
+		}
+		$scope.play = function(){
+			soundService.play();
+		}
+
+		//watch soundService for playing status
+		$scope.$watch('sndSvc.playing', function(newVal){
+			$scope.playing = newVal;
+			console.log('playing: ' + newVal);
+		});
+		//watch soundService for current track
+		$scope.$watch('sndSvc.currentTrack', function(newVal){
+			$scope.currentTrack = newVal;
+			console.log(newVal);
+		});
+
+	}])
+	.service('soundService', ['scKey', function(scKey){
+		
+		var player = {};
+		var playlist = [];
+		var playingIndex = 0;
+		var currentSound;
+		
+		this.currentTrack = {};
+		this.playing = false;
+
+		this.newPlayer = function(tracks){
+			playlist = tracks;
+			player = soundManager.setup({
+				//
+			});
+			this.playTrack(0);
+			this.playing = true;
+			// soundService.play();
+		}
+		this.playTrack = function(index){
+			var url = playlist[index].stream_url + '?client_id=' + scKey;
+			currentSound = player.createSound({ id: index, url: url, autoPlay: true});
+			playingIndex = index;
+			this.currentTrack = playlist[index];
+			this.playing = true;
+
+		}
+		this.play = function(){
+			currentSound.play();
+			this.playing = true;
+		}
+		this.next = function(){
+			currentSound.destruct();
+			playingIndex++;
+			this.playTrack(playingIndex);
+			this.playing = true;
+		}
+		this.pause = function(){
+			currentSound.pause();
+			this.playing = false;
+		}
+
+	}])
 	.controller('CollageCtrl', ['$scope', '$window', function($scope, $window){
 
 		$scope.allImages = [];
