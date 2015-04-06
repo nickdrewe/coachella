@@ -1,5 +1,5 @@
 
-angular.module('myApp', ['ngAnimate', 'angularSoundManager'])
+angular.module('myApp', ['ngAnimate'])
 	.controller('MainCtrl', function($scope, $http){
 
 		$scope.data = {
@@ -12,32 +12,47 @@ angular.module('myApp', ['ngAnimate', 'angularSoundManager'])
 		});
 
 	})
-	.controller('SoundCtrl', ['$scope', 'angularPlayer', function ($scope, angularPlayer) {
+	.controller('SoundCtrl', ['$scope', '$http', function ($scope, $http) {
+
 		$scope.songs = [];
-		
-		SC.initialize({
-			client_id: "e1c2a174e148e7f9ef62cb7116c1c5fe"
-		});
-		
-		SC.get("/playlists/72999862/tracks", {
-			limit: 20
-		}, function(tracks) {
-			for (var i = 0; i < tracks.length; i ++) {
-				SC.stream( '/tracks/' + tracks[i].id, function( sm_object ){
-					var track = {
-						id: tracks[i].id,
-						title: tracks[i].title,
-						artist: tracks[i].genre,
-						url: sm_object.url
-					};
-					
-					$scope.$apply(function () {
-						$scope.songs.push(track);
+		$scope.player = {
+			trackIndex: 0,
+			playing: false
+		}
+
+		//grab a playlist
+		var url = 'https://api.soundcloud.com/playlists/72999862.json?client_id=e1c2a174e148e7f9ef62cb7116c1c5fe';
+		$http.get(url)
+		.success(function(data){
+			//add tracks to list of songs
+			for(i = 0; i < data.tracks.length; i++){
+				if(i < data.tracks.length - 1){
+					$scope.songs.push(data.tracks[i]);
+				} else {
+					//start player
+					console.log('playlist loaded');
+					console.log($scope.songs);
+
+					//load first track.
+					var url = $scope.songs[$scope.player.trackIndex].stream_url + '?client_id=e1c2a174e148e7f9ef62cb7116c1c5fe';
+					var mySound = soundManager.createSound({
+						id: $scope.player.trackIndex,
+						url: url
 					});
-				});
-			}         
+					console.log('playing');
+					mySound.play();
+				}
+				
+			}
 		});
 	}])
+	.service('soundService', function(player){
+		this.next = function(player){
+			$scope.player.trackIndex++;
+			var url = $scope.songs[$scope.player.trackIndex].stream_url + '?client_id=e1c2a174e148e7f9ef62cb7116c1c5fe';
+			player.url = url;
+		}
+	})
 	.controller('CollageCtrl', ['$scope', '$window', function($scope, $window){
 
 		$scope.allImages = [];
