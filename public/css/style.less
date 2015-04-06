@@ -1,40 +1,33 @@
 body{
 	margin: 0px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 .row{
-	height: 200px;
-	margin-left: -10px;
-	margin-right: -10px;
+	position: relative;
+	margin-left: -20px;
+	margin-right: -20px;
 
+	/* crispen image edges */
 	-webkit-transform: rotateZ(2.5deg); /* Safari */
 	transform: translateZ(1px) rotateZ(2.5deg);
 
-	position: relative;
-}
-.row1{
 	background-color: rgb(178, 255, 229);
 	border-top: 5px solid rgba(255,255,255,0.5);
 }
-.row2{
-	background-color: blue;
-}
-.row3{
-	background-color: orange;
-}
-
 .image{
 	display: inline-block;
 	position: absolute;
-	-ms-transform: translateX(1500px);
-	-webkit-transform: translateX(1500px);
-	transform: translateX(1500px);
-}
+	height: 100%;
+	width: auto;
 
+	/* this must be here to initialise the photos to a good place */
+	left: 100%;
+}
 .photo{
-	width: 200px;
-	height: 200px;
+	height: 100%;
 }
-
 /*player*/
 .songlist{
 	display: none;

@@ -1,82 +1,75 @@
 // Animated collage directive
 
 angular.module('unCollage', [])
-	.directive('collage', ['$window', '$timeout', '$compile', 
-	function($window, $timeout, $compile){
+	.directive('collage', ['$window', '$timeout', '$compile', function($window, $timeout, $compile){
 		return {
 			scope: {
-				collage: '=collage'
+				allImages: '=collage'
 			},
+			template: '<div ng-repeat="row in rowData"><div image-row="row" class="row"></div></div>',
 			link: function(scope, elem, attrs){
 
-				// internals
-				scope.allImages = [];
-				scope.rowImages = [];
+				// initialisation
+				function initialiseRows(){
 
-				var rows = 0;
+					scope.added = 0;
 
-				/*** helper functions ***/
+					// calculate the optimum number of rows and create them
+					var width = $window.innerWidth;
+					var height = $window.innerHeight - 100; // toolbar
+
+					var rows = Math.min(4, Math.floor(Math.sqrt((attrs.maxImages * height) / width)));
+
+					// calculate the row dimensions
+					var rowHeight = height / rows;
+					var rowWidth = Math.ceil(width / rowHeight) * rowHeight;
+
+					// initialise the image arrays for each row
+					scope.rowData = [];
+					for(var i=0; i<rows; i++){
+						scope.rowData.push({
+							images: [],
+							width: rowWidth,
+							height: rowHeight
+						});
+					}
+				}
 
 				// random integer (between 0 and max)
 				function randInt(max){
 					return Math.floor(Math.random() * max);
 				}
 
-				// initialisation
-				function initialise(maxImages){
-
-					// calculate the optimum number of rows and create them
-					var width = $window.innerWidth;
-					var height = $window.innerHeight;
-
-					rows = Math.floor(Math.sqrt((maxImages * height) / width));
-
-					// initialise the image arrays for each row
-					for(var i=0; i<rows; i++){
-						scope.rowImages.push([]);
-					}
-
-					// create rows
-					for(var i=0; i<rows; i++){
-						elem.append('<div image-row="rowImages[' + i + ']" class="row row1"></div>');	
-					}				
-
-					// compile the initialised row objects
-					$compile(elem.contents())(scope);	
-				}
-
 				// add a new image to the view
-				function addImage(){
-					// shift off the front of the images array
-					var image = scope.allImages.shift();
+				function addImage(row){
+					if(scope.allImages.length > 0){
+						// shift off the front of the images array
+						var image = scope.allImages.shift();
 
-					var row = randInt(rows);
-					//$scope.allImages[0].left = -900;
-					scope.rowImages[row].push(image);
+						if(typeof row === 'undefined'){
+							row = randInt(scope.rowData.length);
+						}						
+						scope.rowData[row].images.push(image);
+						scope.added++;
+					}
 				}
 
-				function newImage(){
-					addImage();
-					$timeout(newImage, 2000);
+				function imageLoop(){
+					addImage();	
+					$timeout(imageLoop, 1500);					
 				}
 
 				/*** setup ***/
 
 				// initialise the directive
-				initialise(attrs.maxImages);
+				initialiseRows();
 
-				// watch for changes to the image set
-				// NOTE: for now we are just watching for an entire list update,
-				// not for additions/removals from the list
-				scope.$watch('collage', function(newValue, oldValue){
-					if(newValue.length > 0){
-						// change the primary image set to the new one
-						scope.allImages = newValue;
-						
-						// ensure the image updating process is occuring
+				// start the image loop
+				imageLoop();
 
-						newImage();
-					}
+				// deal with resizing
+				angular.element($window).bind('resize', function(){
+					scope.$apply(initialiseRows);
 				});
 			}
 		}
@@ -84,10 +77,16 @@ angular.module('unCollage', [])
 	.directive('imageRow', ['$timeout', function($timeout){
 		return {
 			scope: {
-				images: '=imageRow'
+				rowData: '=imageRow'
 			},
-			template: '<div class="image" ng-repeat="image in images"><div insta-image="image"></div></div>',
+			template: '<div class="image" ng-repeat="image in rowData.images"><div insta-image="image" on-load="loaded()" on-animation-complete="animationComplete()"></div></div>',
 			link: function(scope, elem, attrs){
+
+				// alter the width/height once it has been visualised
+				$timeout(function(){
+					elem.css('width', scope.rowData.width);
+					elem.css('height', scope.rowData.height);
+				});
 				
 				// called once the image has loaded
 				scope.loaded = function(){
@@ -96,58 +95,75 @@ angular.module('unCollage', [])
 						var width = elem[0].clientWidth;
 						var height = elem[0].clientHeight;
 
-						var total = scope.images.length;
-						var start = width - 200;
+						var images = scope.rowData.images;
+
+						var total = images.length;
+						var start = width - scope.rowData.height;
 
 						for(var i=total-1; i>=0; i--){
-							scope.images[i].left = start;
-							start -= 200;
+							images[i].left = start;
+							start -= scope.rowData.height;
 						}
 						scope.$apply();
 					});					
 				};
 
-				scope.cleanup = function(){
-					if(scope.images.length >= 9){
-						var width = elem[0].clientWidth;
-						var total = scope.images.length;
+				scope.animationComplete = function(){
+					var images = scope.rowData.images;
+					if(images.length >= scope.rowData.width / scope.rowData.height){
+						var total = images.length;
 						for(var i=0; i<total; i++){
-							if(scope.images[i].left < width){
+							if(images[i].left >= 0){
 								break;
 							}
-							scope.images.shift();	
-						}						
+							images.shift();
+						}	
 						scope.$apply();
 					}
 				};
 			}
 		};
 	}])
-	.directive('instaImage', function(){
+	.directive('instaImage', ['$timeout', function($timeout){
 		return {
 			scope: {
-				image: '=instaImage'
+				image: '=instaImage',
+				loadFunc: '&onLoad',
+				completeFunc: '&onAnimationComplete'
 			},
 			template: '<div><img class="photo" ng-src="{{image.images.low_resolution.url}}" image-loaded="loaded()"/></div>',
 			link: function(scope, elem, attrs){
 
-				//scope.$watch
+				function translateX(pos){
+					var amount = 'translateX(' + pos + 'px)';
+					angular.forEach(['-ms-transform', '-webkit-transform', 'transform'], function(style){
+						elem.parent().css(style, amount);
+					});
+				}
+
+				scope.loaded = function() {
+					// once the image has loaded, call the attribute function
+					scope.loadFunc();
+				};
 
 				scope.$watch('image.left', function(newValue, oldValue){
 					if(oldValue !== newValue){
-						// if the position has changed, tween it with complete callback
+						// due to the css differences between translate and left, we have to hack the animation
+						// basically we translate the image to the right off the screen, and then turn off left before animating
+						translateX(elem.parent().parent()[0].offsetWidth);
+						elem.parent().css('left', 'auto');
 						TweenLite.to(elem.parent()[0], 1, {
 							x: newValue,
 							ease: Cubic.easeInOut,
 							onComplete: function(){
-								scope.cleanup();
+								scope.completeFunc();
 							}
 						});
 					}
 				});
 			}
 		};
-	})
+	}])
 	// directive for triggering functions once an image has loaded
 	.directive('imageLoaded', ['$parse', function($parse){
 		return {
