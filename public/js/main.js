@@ -12,7 +12,7 @@ angular.module('myApp', ['ngAnimate'])
 		});
 
 	})
-	.controller('SoundCtrl', ['$scope', '$http', function ($scope, $http) {
+	.controller('SoundCtrl', ['$scope', '$http', 'soundService', function ($scope, $http, soundService) {
 
 		$scope.songs = [];
 		$scope.player = {
