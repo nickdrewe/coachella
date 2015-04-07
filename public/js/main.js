@@ -46,8 +46,6 @@ angular.module('myApp', ['unCollage', 'ngAnimate'])
 			$scope.playing = newVal;
 			console.log('playing: ' + newVal);
 		});
-<<<<<<< HEAD
-=======
 		//watch soundService for current track
 		$scope.$watch('sndSvc.currentTrack', function(newVal){
 			$scope.currentTrack = newVal;
@@ -271,7 +269,6 @@ angular.module('myApp', ['unCollage', 'ngAnimate'])
 				});
 			}
 		}
->>>>>>> soundmanager
 	}]);
 	
 
