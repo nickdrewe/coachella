@@ -25,6 +25,7 @@
 	<div class="player-overlay">
 		<div class="player" ng-controller="SoundCtrl">
 			<div class="controls" ng-if="loaded">
+				<img class="player-artwork" ng-src="{{currentTrack.artwork_url}}"/>
 				{{currentTrack.title | uppercase}}
 				<span class="icon-pause player-icon" ng-click="pause()" ng-if="playing"></span>
 				<span class="icon-play player-icon" ng-click="play()" ng-if="!playing"></span>
