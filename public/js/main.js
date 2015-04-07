@@ -18,7 +18,7 @@ angular.module('myApp', ['unCollage'])
 		$scope.playing = false;
 		$scope.currentTrack;
 
-		var playlistUrl = 'https://api.soundcloud.com/playlists/72999862.json' + '?streamable=true&client_id=' + scKey;
+		var playlistUrl = 'https://api.soundcloud.com/playlists/14527861.json' + '?streamable=true&client_id=' + scKey;
 		$http.get(playlistUrl).success(function(data){
 
 			var streamableTracks = [];
@@ -73,13 +73,14 @@ angular.module('myApp', ['unCollage'])
 			// soundService.play();
 		}
 		this.playTrack = function(index){
+			var self = this;
 			var url = playlist[index].stream_url + '?client_id=' + scKey;
 			currentSound = player.createSound({
 				id: index,
 				url: url,
 				autoPlay: true,
 				onfinish: function(){
-					this.next();
+					self.next();
 				}
 			});
 			playingIndex = index;
