@@ -18,7 +18,7 @@ angular.module('myApp', ['unCollage'])
 		$scope.playing = false;
 		$scope.currentTrack;
 
-		var playlistUrl = 'https://api.soundcloud.com/playlists/14527861.json' + '?streamable=true&client_id=' + scKey;
+		var playlistUrl = 'https://api.soundcloud.com/playlists/92416187.json' + '?streamable=true&client_id=' + scKey;
 		$http.get(playlistUrl).success(function(data){
 
 			var streamableTracks = [];
