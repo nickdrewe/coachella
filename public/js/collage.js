@@ -126,7 +126,7 @@ angular.module('unCollage', [])
 
 						for(var i=total-1; i>=0; i--){
 							images[i].left = start;
-							start -= height + 5;
+							start -= height + 3;
 						}
 						scope.$apply();
 					});					
@@ -152,18 +152,6 @@ angular.module('unCollage', [])
 				// click on image behaviour
 				scope.selectImage = function(image){
 					scope.$emit('image_clicked');
-/*
-					TweenLite.to(elem.parent()[0], 0.5, {
-						top: 0,
-						bottom: 0,
-						ease: Power2.easeOut,
-						onComplete: function(){
-							//scope.completeFunc();
-						}
-					});
-*/
-					//elem.parent().css('top', 0);
-					//elem.parent().css('bottom', 0);
 				};
 			}
 		};
@@ -224,7 +212,8 @@ angular.module('unCollage', [])
 			link: function(scope, elem, attrs){
 				attrs.$observe('backImage', function(value) {
 					elem.css({
-						'background-image': 'url(' + value +')',
+						'background': 'linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.7)), url(' + value +')',
+						//'background': 'url(' + value +')',
 						'background-size' : 'cover',
 						'background-position' : 'center'
 					});
