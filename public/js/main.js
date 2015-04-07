@@ -67,7 +67,7 @@ angular.module('myApp', ['ngAnimate'])
 		this.newPlayer = function(tracks){
 			playlist = tracks;
 			player = soundManager.setup({
-				//
+				//something
 			});
 			this.playTrack(0);
 			this.playing = true;
@@ -75,7 +75,14 @@ angular.module('myApp', ['ngAnimate'])
 		}
 		this.playTrack = function(index){
 			var url = playlist[index].stream_url + '?client_id=' + scKey;
-			currentSound = player.createSound({ id: index, url: url, autoPlay: true});
+			currentSound = player.createSound({
+				id: index,
+				url: url,
+				autoPlay: true,
+				onfinish: function(){
+					this.next();
+				}
+			});
 			playingIndex = index;
 			this.currentTrack = playlist[index];
 			this.playing = true;
