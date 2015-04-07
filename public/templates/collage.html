@@ -1,6 +1,9 @@
-<div class="collage-inner" ng-show="isOpen">
+<div class="collage-inner" ng-show="isOpen" back-image="{{selectedImage.images.standard_resolution.url}}" overlay="linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8))">
 	<div class="details">
-		<button ng-click="closeInner()">CLOSE!!!!!!!!!!!!!!!</button>
+		<!-- <button ng-click="closeInner()">CLOSE!!!!!!!!!!!!!!!</button> -->
+		<div class="image-large-cont">
+			<img class="image-large" ng-src="{{selectedImage.images.standard_resolution.url}}"/>
+		</div>
 	</div>
 </div>
-<div ng-repeat="row in rowData" class="row" image-row="row" back-image="{{row.background}}"></div>
+<div ng-repeat="row in rowData" class="row" image-row="row" back-image="{{row.background}}" overlay="linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))"></div>

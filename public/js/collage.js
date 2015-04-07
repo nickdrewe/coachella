@@ -15,6 +15,7 @@ angular.module('unCollage', [])
 					'images/03.jpg',
 					'images/04.jpg'
 				];
+				var slideSpeed = 0.5;
 
 				// initialisation
 				function initialise(){
@@ -64,6 +65,30 @@ angular.module('unCollage', [])
 					}					
 				}
 
+				/*** row opening functions ***/
+
+				function offsetRowY(index, offset, speed){
+					if(typeof speed === 'undefined'){
+						speed = 0.5;
+					}
+					TweenLite.to(elem.children()[index], speed, {
+						y: offset,
+						ease: Power2.easeOut
+					});
+				}
+
+				function calcYOffset(){
+					var height = elem[0].clientHeight;
+					return height * 0.375;
+				}
+
+				function doSlideAnim(speed, offset){
+					offsetRowY(1, -offset, speed);
+					offsetRowY(2, -offset, speed);
+					offsetRowY(3, offset, speed);
+					offsetRowY(4, offset, speed);
+				}
+
 				/*** setup ***/
 
 				// initialise the directive
@@ -72,35 +97,26 @@ angular.module('unCollage', [])
 				// start the image loop
 				imageLoop();
 
-				function animateRowY(index, offset) {
-					TweenLite.to(elem.children()[index], 0.5, {
-						y: offset,
-						ease: Power2.easeOut,
-						onComplete: function(){
-							//scope.completeFunc();
-						}
-					});
-				}
-
-				scope.$on('image_clicked', function(){
+				scope.$on('image_clicked', function(e, args){
 					if(!scope.isOpen){
 						scope.isOpen = true;
-						// open the rows
-						animateRowY(1, -200);
-						animateRowY(2, -200);
-						animateRowY(3, 200);
-						animateRowY(4, 200);
-					}					
+						doSlideAnim(slideSpeed, calcYOffset());
+					}
+					scope.selectedImage = args.image;
 				});
 
 				scope.closeInner = function(){
 					scope.isOpen = false;
-					// open the rows
-					animateRowY(1, 0);
-					animateRowY(2, 0);
-					animateRowY(3, 0);
-					animateRowY(4, 0);
+					doSlideAnim(slideSpeed, 0);
 				};
+
+				// deal with resizing
+				angular.element($window).bind('resize', function(){
+					if(scope.isOpen){
+						doSlideAnim(0, calcYOffset());
+						scope.$apply();	
+					}					
+				});
 			}
 		}
 	}])		
@@ -151,7 +167,7 @@ angular.module('unCollage', [])
 
 				// click on image behaviour
 				scope.selectImage = function(image){
-					scope.$emit('image_clicked');
+					scope.$emit('image_clicked', { image: image });
 				};
 			}
 		};
@@ -211,9 +227,12 @@ angular.module('unCollage', [])
 		return {
 			link: function(scope, elem, attrs){
 				attrs.$observe('backImage', function(value) {
+					var img = 'url(' + value +')';
+					if(attrs.overlay){
+						img = attrs.overlay + ', ' + img;
+					}
 					elem.css({
-						'background': 'linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.7)), url(' + value +')',
-						//'background': 'url(' + value +')',
+						'background': img,
 						'background-size' : 'cover',
 						'background-position' : 'center'
 					});
