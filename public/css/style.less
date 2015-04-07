@@ -4,11 +4,32 @@ body{
 	height: 100%;
 	overflow: hidden;
 }
-.row-wrapper{
-	position: absolute;
-}
-.row{
+.collage{
 	position: relative;
+}
+.collage-inner{
+	position: absolute;
+	width: 110%;
+	height: 50%;
+	margin-left: -20px;
+	margin-right: -20px;
+	top: 25%;
+	left: 0;
+	
+	-webkit-transform: rotateZ(2.5deg); /* Safari */
+	transform: translateZ(1px) rotateZ(2.5deg);
+}
+/*
+.details{
+	display: inline-block;
+	width: 100px;
+	height: 50%;
+	background-color: #000;
+}
+*/
+.row{
+	width: 110%;
+	height: 20.5%;
 	margin-left: -20px;
 	margin-right: -20px;
 
@@ -39,11 +60,10 @@ body{
 	display: none;
 }
 .player{
-	position: fixed;
-	height: 120px;
-	left: -5px;
-	right: -5px;
-	bottom: -35px;
+	/*position: fixed;*/
+	height: 22%;
+	margin-left: -1%;
+	margin-right: -1%;
 	background-color: rgba(255,255,255,.8);
 
 	-webkit-transform: rotateZ(2.5deg); /* Safari */

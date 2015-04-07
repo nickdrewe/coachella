@@ -6,30 +6,20 @@ angular.module('unCollage', [])
 			scope: {
 				allImages: '=collage'
 			},
-			template: '<div ng-repeat="row in rowData" class="row-wrapper"><div image-row="row" class="row"></div></div>',
+			templateUrl: 'templates/collage.html',
 			link: function(scope, elem, attrs){
 
 				// initialisation
-				function initialiseRows(){
+				function initialise(){
 
-					// calculate the optimum number of rows and create them
-					var width = $window.innerWidth;
-					var height = $window.innerHeight - 95; // toolbar
-
-					var rows = Math.min(4, Math.floor(Math.sqrt((attrs.maxImages * height) / width)));
-
-					// calculate the row dimensions
-					var rowHeight = height / rows;
-					var rowWidth = Math.ceil(width / rowHeight) * rowHeight;
+					scope.isOpen = false;
+					scope.rows = 4;
 
 					// initialise the image arrays for each row
 					scope.rowData = [];
-					for(var i=0; i<rows; i++){
+					for(var i=0; i<scope.rows; i++){
 						scope.rowData.push({
-							images: [],
-							top: i * rowHeight,
-							width: rowWidth,
-							height: rowHeight
+							images: []
 						});
 					}
 				}
@@ -47,7 +37,11 @@ angular.module('unCollage', [])
 
 						if(typeof row === 'undefined'){
 							// get a random row
-							row = randInt(scope.rowData.length);
+							if(scope.isOpen){
+								row = randInt(2) + 1;
+							}else{
+								row = randInt(scope.rows);
+							}							
 						}						
 						scope.rowData[row].images.push(image);
 					}
@@ -65,33 +59,51 @@ angular.module('unCollage', [])
 				/*** setup ***/
 
 				// initialise the directive
-				initialiseRows();
+				initialise();
 
 				// start the image loop
 				imageLoop();
 
-				// deal with resizing
-				angular.element($window).bind('resize', function(){
-					scope.$apply(initialiseRows);
+				function animateRowY(index, offset) {
+					TweenLite.to(elem.children()[index], 0.5, {
+						y: offset,
+						ease: Power2.easeOut,
+						onComplete: function(){
+							//scope.completeFunc();
+						}
+					});
+				}
+
+				scope.$on('image_clicked', function(){
+					if(!scope.isOpen){
+						scope.isOpen = true;
+						// open the rows
+						animateRowY(1, -200);
+						animateRowY(2, -200);
+						animateRowY(3, 200);
+						animateRowY(4, 200);
+					}					
 				});
+
+				scope.closeInner = function(){
+					scope.isOpen = false;
+					// open the rows
+					animateRowY(1, 0);
+					animateRowY(2, 0);
+					animateRowY(3, 0);
+					animateRowY(4, 0);
+				};
 			}
 		}
 	}])		
-	.directive('imageRow', ['$timeout', function($timeout){
+	.directive('imageRow', ['$timeout', '$window', function($timeout, $window){
 		return {
 			scope: {
 				rowData: '=imageRow'
 			},
-			template: '<div class="image" ng-repeat="image in rowData.images"><div insta-image="image" on-load="loaded()" on-animation-complete="animationComplete()"></div></div>',
+			template: '<div class="image" ng-repeat="image in rowData.images" ng-click="selectImage(image)"><div insta-image="image" on-load="loaded()" on-animation-complete="animationComplete()"></div></div>',
 			link: function(scope, elem, attrs){
 
-				// alter the width/height once it has been visualised
-				$timeout(function(){
-					elem.css('width', scope.rowData.width);
-					elem.css('height', scope.rowData.height);
-					elem.parent().css('top', scope.rowData.top);
-				});
-				
 				// called once the image has loaded
 				scope.loaded = function(){
 					$timeout(function(){
@@ -102,28 +114,48 @@ angular.module('unCollage', [])
 						var images = scope.rowData.images;
 
 						var total = images.length;
-						var start = width - scope.rowData.height;
+						var start = width - height;
 
 						for(var i=total-1; i>=0; i--){
 							images[i].left = start;
-							start -= scope.rowData.height;
+							start -= height;
 						}
 						scope.$apply();
 					});					
 				};
 
 				scope.animationComplete = function(){
+					var height = elem[0].clientHeight;
 					var images = scope.rowData.images;
-					if(images.length >= scope.rowData.width / scope.rowData.height){
-						var total = images.length;
-						for(var i=0; i<total; i++){
-							if(images[i].left >= 0){
-								break;
-							}
-							images.shift();
-						}	
-						scope.$apply();
-					}
+					var total = images.length;
+					for(var i=0; i<total; i++){
+						if(images[i].left >= -height){
+							break;
+						}
+						images.shift();
+					}	
+					scope.$apply();
+				};
+
+				angular.element($window).bind('resize', function(){
+					scope.$apply(scope.loaded);
+				});
+
+				// click on image behaviour
+				scope.selectImage = function(image){
+					scope.$emit('image_clicked');
+/*
+					TweenLite.to(elem.parent()[0], 0.5, {
+						top: 0,
+						bottom: 0,
+						ease: Power2.easeOut,
+						onComplete: function(){
+							//scope.completeFunc();
+						}
+					});
+*/
+					//elem.parent().css('top', 0);
+					//elem.parent().css('bottom', 0);
 				};
 			}
 		};
