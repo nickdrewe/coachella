@@ -9,6 +9,13 @@ angular.module('unCollage', [])
 			templateUrl: 'templates/collage.html',
 			link: function(scope, elem, attrs){
 
+				var backgrounds = [
+					'images/01.jpg',
+					'images/02.jpg',
+					'images/03.jpg',
+					'images/04.jpg'
+				];
+
 				// initialisation
 				function initialise(){
 
@@ -19,7 +26,8 @@ angular.module('unCollage', [])
 					scope.rowData = [];
 					for(var i=0; i<scope.rows; i++){
 						scope.rowData.push({
-							images: []
+							images: [],
+							background: backgrounds[i]
 						});
 					}
 				}
@@ -118,7 +126,7 @@ angular.module('unCollage', [])
 
 						for(var i=total-1; i>=0; i--){
 							images[i].left = start;
-							start -= height;
+							start -= height + 5;
 						}
 						scope.$apply();
 					});					
@@ -209,5 +217,18 @@ angular.module('unCollage', [])
 					handler(scope);
 				});
 			}
-		}
+		};
+	}])
+	.directive('backImage', [function(){
+		return {
+			link: function(scope, elem, attrs){
+				attrs.$observe('backImage', function(value) {
+					elem.css({
+						'background-image': 'url(' + value +')',
+						'background-size' : 'cover',
+						'background-position' : 'center'
+					});
+				});
+			}
+		};
 	}]);
