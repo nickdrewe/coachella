@@ -6,7 +6,7 @@ angular.module('unCollage', [])
 			scope: {
 				allImages: '=collage'
 			},
-			template: '<div ng-repeat="row in rowData"><div image-row="row" class="row"></div></div>',
+			template: '<div ng-repeat="row in rowData" class="row-wrapper"><div image-row="row" class="row"></div></div>',
 			link: function(scope, elem, attrs){
 
 				// initialisation
@@ -14,7 +14,7 @@ angular.module('unCollage', [])
 
 					// calculate the optimum number of rows and create them
 					var width = $window.innerWidth;
-					var height = $window.innerHeight - 100; // toolbar
+					var height = $window.innerHeight - 95; // toolbar
 
 					var rows = Math.min(4, Math.floor(Math.sqrt((attrs.maxImages * height) / width)));
 
@@ -27,6 +27,7 @@ angular.module('unCollage', [])
 					for(var i=0; i<rows; i++){
 						scope.rowData.push({
 							images: [],
+							top: i * rowHeight,
 							width: rowWidth,
 							height: rowHeight
 						});
@@ -45,6 +46,7 @@ angular.module('unCollage', [])
 						var image = scope.allImages.shift();
 
 						if(typeof row === 'undefined'){
+							// get a random row
 							row = randInt(scope.rowData.length);
 						}						
 						scope.rowData[row].images.push(image);
@@ -52,8 +54,12 @@ angular.module('unCollage', [])
 				}
 
 				function imageLoop(){
-					addImage();	
-					$timeout(imageLoop, 1500);					
+					addImage();
+					if(scope.allImages.length > 0){
+						$timeout(imageLoop, 1500);
+					}else{
+						$timeout(imageLoop, 200);
+					}					
 				}
 
 				/*** setup ***/
@@ -83,6 +89,7 @@ angular.module('unCollage', [])
 				$timeout(function(){
 					elem.css('width', scope.rowData.width);
 					elem.css('height', scope.rowData.height);
+					elem.parent().css('top', scope.rowData.top);
 				});
 				
 				// called once the image has loaded
