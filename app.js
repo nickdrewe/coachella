@@ -37,14 +37,14 @@ function everyMinute(){
 
 	var i = 0;
 	var j = 0;
-	var pages = 5;
+	var pages = 10;
 	var optTag = { count: 33 };
 	var optLoc = { count: 33, distance: 2000 };
 
 	posts = [];
 
 	updatePostsTag(optTag);
-	updatePostsLoc(optLoc);
+	//updatePostsLoc(optLoc);
 
 	function updatePostsTag(optTag){
 		ig.tag_media_recent('coachella', optTag, function(err, medias, pagination, remaining, limit) {
@@ -167,12 +167,12 @@ var spamAccounts = [
 
 ];
 
-var spamStrings = /(my bio|8613566347511|contest|coupon)/;
+var spamStrings = /(my\sbio|8613566347511|8615706823096|Keepitsecretstore|contest|coupon)/;
 
 function isSpam(post){
 	if (post.caption && spamStrings.test(post.caption)){
 		console.log('SPAM!');
-		console.log(post.caption);
+		// console.log(post.caption);
 		return true;
 	} else if(_.includes(spamAccounts, post.username)){
 		return true;
