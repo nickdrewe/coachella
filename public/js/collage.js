@@ -179,7 +179,7 @@ angular.module('unCollage', [])
 				loadFunc: '&onLoad',
 				completeFunc: '&onAnimationComplete'
 			},
-			template: '<div><img class="photo" ng-src="{{image.images.low_resolution.url}}" image-loaded="loaded()"/></div>',
+			template: '<div class="photo-outer"><img class="photo" ng-src="{{image.images.low_resolution.url}}" image-loaded="loaded()"/></div>',
 			link: function(scope, elem, attrs){
 
 				function translateX(pos){

@@ -1,0 +1,8 @@
+<div class="player">
+	<div class="controls" ng-if="state.currentTrack">
+		<img class="player-artwork" ng-src="{{state.currentTrack.artwork_url}}"/>
+		{{state.currentTrack.title | uppercase}}
+		<span class="icon-pause player-icon" ng-click="playPause()" ng-class="{ 'icon-pause':state.playing, 'icon-play':!state.playing }"></span>
+		<span class="icon-fast-forward player-icon" ng-click="nextTrack()"></span>
+	</div>
+</div>
