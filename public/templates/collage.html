@@ -1,12 +1,21 @@
 <div class="collage-inner" back-image="{{selectedImage.images.standard_resolution.url}}" overlay="linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8))">
 	<div class="details" ng-show="isOpen">
 		<div class="image-large-cont">
-			<div class="image-wrapper">
+			<div class="image-wrapper" ng-if="selectedImage">
 				<a ng-href="{{selectedImage.link}}" target="_blank">
 					<img ng-if="selectedImage" class="image-large" ng-src="{{selectedImage.images.standard_resolution.url}}"/>
 				</a>
-				<div class="info" ng-if="!selectedImage">
-				Some stuff about us!
+				<div class="image-close" ng-click="closeInner()">
+					<span class="icon-cancel"></span>
+				</div>
+			</div>
+			<div class="info-wrapper" ng-if="!selectedImage">
+				<div class="info-content">
+					<p>[Whatever this is called] was created by <a ng-href="https://twitter.com/nickdrewe">Nick Drewe</a>, <a ng-href="https://twitter.com/_MattWay">Matt Way</a> and a guy named <a ng-href="https://www.facebook.com/sadsuedesigns">Duckboi</a> (serious).</p>
+					<p>We'd prefer to stay home and make websites about music festivals then actually go to them.</p>
+					<p>We build a ton of stuff.</p>
+					<p>Some things, like this, <a ng-href="http://splendourinthegrams.com">Warmest 100</a>, <a ng-href="http://splendourinthegrams.com">Splendour In The Grams</a>, and <a ng-href="http://ruffle.us">Ruffle</a>, we build for fun.</p>
+					<p>Other things, like <a ng-href="http://nurture.au">Nurture</a>, <a ng-href="http://churn.tv">Churn</a>, and <a ng-href="http://memebig.com">memeBig</a> we're building because we want to change the way things work.</p>
 				</div>
 				<div class="image-close" ng-click="closeInner()">
 					<span class="icon-cancel"></span>
