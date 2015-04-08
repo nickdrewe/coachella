@@ -1,3 +1,5 @@
+@import '../lib/lesshat/build/lesshat.less';
+
 body{
 	margin: 0px;
 	width: 100%;
@@ -82,10 +84,15 @@ body{
 }
 .photo{
 	height: 100%;
+	.transition(all 0.2s ease);
 
 	&:hover{
-		height: 105%;
+		height: 106%;
 		cursor: pointer;
+		margin-top: -3%;
+		margin-left: -3%;
+
+		.transition(all 0.2s ease);
 	}
 }
 .footer{
@@ -96,7 +103,7 @@ body{
 	-webkit-transform: rotateZ(2.5deg); /* Safari */
 	transform: translateZ(1px) rotateZ(2.5deg);
 
-	/*border-top: 3px solid #000*/;
+	/*border-top: 3px solid #000*/
 	/* to fix row wrapper/row height mismatch */
 	margin-top: -3px;
 
