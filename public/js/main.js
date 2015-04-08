@@ -11,7 +11,7 @@ angular.module('myApp', ['unCollage', 'unPlayer'])
 		function loadImages(){
 			$http.get('/posts.json').success(function(result){
 				$scope.data.posts = result;
-				$timeout(loadImages, 6500);
+				$timeout(loadImages, 65000);
 			});
 		}
 		loadImages();
