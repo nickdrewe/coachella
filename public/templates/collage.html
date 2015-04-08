@@ -3,12 +3,14 @@
 	<div class="details">
 		<div class="image-large-cont">
 			<div class="image-wrapper">
-				<img ng-if="selectedImage" class="image-large" ng-src="{{selectedImage.images.standard_resolution.url}}"/>
+				<a ng-href="{{selectedImage.link}}" target="_blank">
+					<img ng-if="selectedImage" class="image-large" ng-src="{{selectedImage.images.standard_resolution.url}}"/>
+				</a>
 				<div class="info" ng-if="!selectedImage">
 				Some stuff about us!
 				</div>
 				<div class="image-close" ng-click="closeInner()">
-					X
+					<span class="icon-cancel"></span>
 				</div>
 			</div>
 		</div>

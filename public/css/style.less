@@ -48,12 +48,17 @@ body{
 }
 .image-close{
 	color: #fff;
+	vertical-align: top;
+	display: inline-block;
+	font-size: 30px;
+	cursor: pointer;
 }
 .image-large{
     max-height: 100%;
-    max-width: 90%;
+    max-width: 75%;
     border: 10px solid #fff;
     box-sizing: border-box;
+    margin-left: 20px;
 }
 .row{
 	width: 110%;
@@ -138,9 +143,11 @@ body{
 }
 .logo-huh{
 	color: #fff;
-	font-size: 20px;
+	font-size: 22px;
 	text-align: right;
 	cursor: pointer;
+	display: inline-block;
+	vertical-align: 20px;
 
 	text-shadow: 
 				-2px -2px 1px rgba(0,0,0,0.4),  
@@ -153,7 +160,15 @@ body{
 				0px 2px 1px rgba(0,0,0,0.4);
 
 	&:hover{
-		font-size: 22px;
+		text-shadow: 
+				-2px -2px 1px #7ae8ff,
+				2px -2px 1px #7ae8ff,
+				-2px 2px 1px #7ae8ff,
+				2px 2px 1px #7ae8ff,
+				-2px 0px 1px #7ae8ff,
+				2px 0px 1px #7ae8ff,
+				0px 2px 1px #7ae8ff,
+				0px 2px 1px #7ae8ff;
 	}
 }
 
