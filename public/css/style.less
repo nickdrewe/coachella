@@ -43,6 +43,23 @@ body{
     -webkit-transform: translateY(-50%); /* Safari */
     transform: translateY(-50%);
 }
+.image-wrapper{
+	height: 100%;
+}
+.image-close{
+	vertical-align: top;
+	display: inline-block;
+	height: 33px;
+	width: 33px;
+	background-color: #000;
+	color: #fff;
+	border: 3px solid #fff;
+	border-radius: 50%;
+	line-height: 35px;
+	cursor: pointer;
+
+
+}
 .image-large{
     max-height: 100%;
     max-width: 90%;
@@ -84,7 +101,7 @@ body{
 }
 .photo{
 	height: 100%;
-	.transition(all 0.2s ease);
+	.transition(all 0.5s ease);
 
 	&:hover{
 		height: 106%;
@@ -92,7 +109,7 @@ body{
 		margin-top: -3%;
 		margin-left: -3%;
 
-		.transition(all 0.2s ease);
+		.transition(all 0.5s ease);
 	}
 }
 .footer{
