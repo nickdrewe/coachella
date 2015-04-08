@@ -28,7 +28,8 @@ angular.module('unCollage', [])
 					for(var i=0; i<scope.rows; i++){
 						scope.rowData.push({
 							images: [],
-							background: backgrounds[i]
+							background: backgrounds[i],
+							//isLeft: i%2 === 0
 						});
 					}
 				}
@@ -129,7 +130,7 @@ angular.module('unCollage', [])
 			scope: {
 				rowData: '=imageRow'
 			},
-			template: '<div class="image" ng-repeat="image in rowData.images" ng-click="selectImage(image)"><div insta-image="image" on-load="loaded()"></div></div>',
+			template: '<div class="image" ng-repeat="image in rowData.images" ng-click="selectImage(image)" ng-class="{ \'image-left\':rowData.isLeft }"><div insta-image="image" on-load="loaded()" is-left="{{rowData.isLeft}}"></div></div>',
 			link: function(scope, elem, attrs){
 
 				// called once the image has loaded
@@ -140,19 +141,31 @@ angular.module('unCollage', [])
 						var height = elem[0].clientHeight;
 
 						var images = scope.rowData.images;
-
 						var total = images.length;
-						var start = width - height;
 
-						for(var i=total-1; i>=0; i--){
-							// remove any images on the recalc (rather than after any animations)
-							if(start < -(2*height)){
-								images.splice(0, i);
-								break;
+						if(scope.rowData.isLeft){
+							var start = -height;
+							for(var i=total-1; i>=0; i--){
+								// remove any images on the recalc (rather than after any animations)
+								if(start > width + (2*height)){
+									images.splice(0, i);
+									break;
+								}
+								images[i].left = start;
+								start += height + 3;
 							}
-							images[i].left = start;
-							start -= height + 3;
-						}
+						}else{
+							var start = width - height;
+							for(var i=total-1; i>=0; i--){
+								// remove any images on the recalc (rather than after any animations)
+								if(start < -(2*height)){
+									images.splice(0, i);
+									break;
+								}
+								images[i].left = start;
+								start -= height + 3;
+							}	
+						}						
 						scope.$apply();
 					});					
 				};
@@ -194,8 +207,13 @@ angular.module('unCollage', [])
 					if(oldValue !== newValue){
 						// due to the css differences between translate and left, we have to hack the animation
 						// basically we translate the image to the right off the screen, and then turn off left before animating
-						translateX(elem.parent().parent()[0].offsetWidth);
-						elem.parent().css('left', 'auto');
+						if(attrs.isLeft === 'true'){
+							translateX(-elem[0].offsetWidth);
+							elem.parent().css('left', 'auto');
+						}else{
+							translateX(elem.parent().parent()[0].offsetWidth);
+							elem.parent().css('left', 'auto');
+						}
 						TweenLite.to(elem.parent()[0], 1, {
 							x: newValue,
 							ease: Cubic.easeInOut,

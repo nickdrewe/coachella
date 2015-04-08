@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/public'));
 //Routes
 app.get('/posts.json', function (req, res) {
   res.send(posts);
-})
+});
 
 //Server
 var server = app.listen(3000, function (req, res) {
@@ -28,11 +28,9 @@ var server = app.listen(3000, function (req, res) {
 var posts = [];
 
 everyMinute();
-/*
 setInterval(function(){
 	everyMinute()
 }, 60000);
-*/
 
 function everyMinute(){
 
@@ -172,7 +170,7 @@ var spamStrings = /(my\sbio|8613566347511|8615706823096|Keepitsecretstore|contes
 
 function isSpam(post){
 	if (post.caption && spamStrings.test(post.caption)){
-		console.log('SPAM!');
+		//console.log('SPAM!');
 		// console.log(post.caption);
 		return true;
 	} else if(_.includes(spamAccounts, post.username)){
