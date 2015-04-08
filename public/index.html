@@ -16,11 +16,10 @@
 </head>
 <body ng-controller="MainCtrl">
 	<div class="collage" collage="data.posts" max-images="50"></div>
-	<!-- <div class="row" image-row="data.posts"></div> -->
 
 	<div class="logo-overlay">
-		<img class="logo" src="./images/logo.png"/>
-		<div class="logo-huh" ng-click="showInfo()"><span class="icon-help-circled"></span></div>
+		<img class="logo" ng-src="./images/logo.png"/>
+		<div class="logo-huh" ng-click="showInfo()"><span class="icon-info-circled"></span></div>
 	</div>
 
 	<div class="player-overlay" player="playlist" key="e1c2a174e148e7f9ef62cb7116c1c5fe"></div>
