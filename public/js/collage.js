@@ -129,7 +129,7 @@ angular.module('unCollage', [])
 			scope: {
 				rowData: '=imageRow'
 			},
-			template: '<div class="image" ng-repeat="image in rowData.images" ng-click="selectImage(image)"><div insta-image="image" on-load="loaded()" on-animation-complete="animationComplete()"></div></div>',
+			template: '<div class="image" ng-repeat="image in rowData.images" ng-click="selectImage(image)"><div insta-image="image" on-load="loaded()"></div></div>',
 			link: function(scope, elem, attrs){
 
 				// called once the image has loaded
@@ -145,24 +145,16 @@ angular.module('unCollage', [])
 						var start = width - height;
 
 						for(var i=total-1; i>=0; i--){
+							// remove any images on the recalc (rather than after any animations)
+							if(start < -(2*height)){
+								images.splice(0, i);
+								break;
+							}
 							images[i].left = start;
 							start -= height + 3;
 						}
 						scope.$apply();
 					});					
-				};
-
-				scope.animationComplete = function(){
-					var height = elem[0].clientHeight;
-					var images = scope.rowData.images;
-					var total = images.length;
-					for(var i=0; i<total; i++){
-						if(images[i].left >= -height){
-							break;
-						}
-						images.shift();
-					}	
-					scope.$apply();
 				};
 
 				angular.element($window).bind('resize', function(){
@@ -208,7 +200,7 @@ angular.module('unCollage', [])
 							x: newValue,
 							ease: Cubic.easeInOut,
 							onComplete: function(){
-								scope.completeFunc();
+								//scope.completeFunc();
 							}
 						});
 					}

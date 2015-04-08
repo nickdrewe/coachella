@@ -56,7 +56,6 @@ body{
     box-sizing: border-box;
 }
 .row{
-	width: 110%;
 	height: 24%;
 	margin-left: -20px;
 	margin-right: -20px;
@@ -71,6 +70,12 @@ body{
 
 	/* to fix rotated pixel seams */
 	margin-bottom: -1px;
+}
+.row0, .row2{
+	width: 112%;
+}
+.row1, .row3{
+	width: 108%;
 }
 .image{
 	display: inline-block;
@@ -90,7 +95,7 @@ body{
 }
 .photo{
 	height: 100%;
-	.transition(all 0.5s ease);
+	.transition(all 0.2s ease);
 
 	&:hover{
 		height: 106%;
@@ -98,7 +103,7 @@ body{
 		margin-top: -3%;
 		margin-left: -3%;
 
-		.transition(all 0.5s ease);
+		.transition(all 0.2s ease);
 	}
 }
 .footer{

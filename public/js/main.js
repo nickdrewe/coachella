@@ -13,6 +13,7 @@ angular.module('myApp', ['unCollage', 'unPlayer'])
 		};
 
 		// load images every 65 seconds
+		var countThreshold = 60;
 		function loadImages(){
 			$http.get('/posts.json').success(function(result){
 				$scope.data.posts = result;
