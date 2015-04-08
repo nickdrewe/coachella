@@ -2,7 +2,12 @@
 	<div class="details">
 		<!-- <button ng-click="closeInner()">CLOSE!!!!!!!!!!!!!!!</button> -->
 		<div class="image-large-cont" ng-show="selectedImage">
-			<img class="image-large" ng-src="{{selectedImage.images.standard_resolution.url}}"/>
+			<div class="image-wrapper">
+				<div class="image-close">
+					X
+				</div>
+				<img class="image-large" ng-src="{{selectedImage.images.standard_resolution.url}}"/>
+			</div>
 		</div>
 	</div>
 </div>
