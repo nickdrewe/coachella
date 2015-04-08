@@ -1,5 +1,4 @@
 @import '../lib/lesshat/build/lesshat.less';
-
 body{
 	margin: 0px;
 	width: 100%;
@@ -14,6 +13,14 @@ body{
 	background: linear-gradient(135deg,  #7ae8ff 0%,#8e3ae8 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7ae8ff', endColorstr='#8e3ae8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
+}
+a{
+	color: #7ae8ff;
+	text-decoration: none;
+
+	&:visited { color: #7ae8ff };
+	&:active { color: #7ae8ff };
+	&:hover { color: #8e3ae8 };
 }
 .collage{
     position: relative;
@@ -59,6 +66,16 @@ body{
     border: 10px solid #fff;
     box-sizing: border-box;
     margin-left: 20px;
+}
+.info-wrapper{
+	height: 100%;
+}
+.info-content{
+	display: inline-block;
+	color: #fff;
+	font-family: 'Fjalla One', sans-serif;
+	font-size: 20px;
+	max-width: 400px;
 }
 .row{
 	height: 24%;
