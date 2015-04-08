@@ -102,7 +102,11 @@ angular.module('unCollage', [])
 						scope.isOpen = true;
 						doSlideAnim(slideSpeed, calcYOffset());
 					}
-					scope.selectedImage = args.image;
+					if(args && args.image){
+						scope.selectedImage = args.image;
+					}else{
+						scope.selectedImage = null;
+					}					
 				});
 
 				scope.closeInner = function(){
