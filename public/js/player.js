@@ -10,7 +10,10 @@ angular.module('unPlayer', [])
 		};
 
 		// private vars
-		var key, player, currentSound;
+		var key,
+			player,
+			currentSound,
+			firstPlay = true;
 
 		function randInt(max){
 			return Math.floor(Math.random() * max);
@@ -27,6 +30,12 @@ angular.module('unPlayer', [])
 				autoPlay: true,
 				onfinish: function(){
 					self.next();
+				},
+				onsuspend: function(){
+					if(firstPlay){
+						state.playing = false;
+						firstPlay = false;
+					}
 				}
 			});
 			state.trackIndex = index;
