@@ -27,25 +27,30 @@ angular.module('unPlayer', [])
 			var self = this;
 			currentSound = player.createSound({
 				url: state.playlist[index].stream_url + '?client_id=' + key,
-				autoPlay: true,
+				//autoPlay: true,
+				onload: function(success){
+					if(!success){
+						self.next();
+					}
+				},
 				onfinish: function(){
 					self.next();
-				},
-				onplay: function(){
-					state.playing = true;
 				}
 			});
 			state.trackIndex = index;
 			state.currentTrack = state.playlist[index];
+			currentSound.play();
+			state.playing = true;
 		};
 
 		this.playPause = function(){
 			if(state.playing){
 				currentSound.pause();
+				state.playing = false;
 			}else{
 				currentSound.play();
+				state.playing = true;
 			}
-			state.playing = !state.playing;
 		};
 
 		this.next = function(){
@@ -56,7 +61,12 @@ angular.module('unPlayer', [])
 		this.loadPlaylist = function(playlist){
 			state.playlist = playlist;
 			if(!player){
-				player = soundManager.setup();
+				player = soundManager.setup({
+					/*waitForWindowLoad: true,
+					onReady: function(){
+
+					}*/
+				});
 			}
 			this.playTrack(randInt(state.playlist.length));
 		};
