@@ -12,6 +12,10 @@ angular.module('unPlayer', [])
 		// private vars
 		var key, player, currentSound;
 
+		function randInt(max){
+			return Math.floor(Math.random() * max);
+		}
+
 		this.setKey = function(_key){
 			key = _key;
 		};
@@ -41,7 +45,7 @@ angular.module('unPlayer', [])
 
 		this.next = function(){
 			currentSound.destruct();
-			this.playTrack(++state.trackIndex);
+			this.playTrack(randInt(state.playlist.length));
 		};
 
 		this.loadPlaylist = function(playlist){
@@ -49,7 +53,7 @@ angular.module('unPlayer', [])
 			if(!player){
 				player = soundManager.setup();
 			}
-			this.playTrack(0);
+			this.playTrack(randInt(state.playlist.length));
 		};
 
 		this.getState = function(){
