@@ -31,16 +31,12 @@ angular.module('unPlayer', [])
 				onfinish: function(){
 					self.next();
 				},
-				onsuspend: function(){
-					if(firstPlay){
-						state.playing = false;
-						firstPlay = false;
-					}
+				onplay: function(){
+					state.playing = true;
 				}
 			});
 			state.trackIndex = index;
 			state.currentTrack = state.playlist[index];
-			state.playing = true;
 		};
 
 		this.playPause = function(){
