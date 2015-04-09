@@ -8,13 +8,7 @@ angular.module('unCollage', [])
 			},
 			templateUrl: 'templates/collage.html',
 			link: function(scope, elem, attrs){
-
-				var backgrounds = [
-					'images/01.jpg',
-					'images/02.jpg',
-					'images/03.jpg',
-					'images/04.jpg'
-				];
+				
 				var slideSpeed = 0.5;
 
 				// initialisation
@@ -28,7 +22,7 @@ angular.module('unCollage', [])
 					for(var i=0; i<scope.rows; i++){
 						scope.rowData.push({
 							images: [],
-							background: backgrounds[i],
+							background: 'images/' + i + '.jpg'
 							//isLeft: i%2 === 0
 						});
 					}
