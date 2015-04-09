@@ -1,3 +1,6 @@
+/***
+	Contact us via @_MattWay & @nickdrewe
+***/
 angular.module('myApp', ['unCollage', 'unPlayer'])
 	.controller('MainCtrl', ['$scope', '$http', '$timeout', '$rootScope',
 	function($scope, $http, $timeout, $rootScope){
