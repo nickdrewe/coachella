@@ -17,7 +17,8 @@ app.get('/posts.json', function (req, res) {
 });
 
 //Server
-var server = app.listen(3000, function (req, res) {
+var port = process.env.PORT || 3000;
+var server = app.listen(port, function (req, res) {
   var host = server.address().address;
   var port = server.address().port;
 
