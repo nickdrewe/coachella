@@ -167,6 +167,7 @@ p{
 	cursor: pointer;
 	display: inline-block;
 	vertical-align: 20px;
+	margin-left: -10px;
 
 	text-shadow: @bigshadow;				
 
@@ -218,7 +219,7 @@ p{
 @large: ~"only screen and (min-height: 900px)";
 @medium: ~"only screen and (min-height: 640px) and (max-height: 899px)";
 @small: ~"only screen and (min-height: 500px) and (max-height: 639px)";
-@smallest: ~"only screen and (max-height: 499px)";
+@smallest: ~"only screen and (max-width: 499px)";
 
 @media @large{
 	.logo-overlay{
@@ -231,6 +232,7 @@ p{
 
 	.info-content{
 		font-size: 26px;
+		width: 500px;
 		max-width: 500px;
 	}
 }
@@ -251,6 +253,7 @@ p{
 
 	.info-content{
 		font-size: 30px;
+		width: 500px;
 		max-width: 600px;
 	}
 }
@@ -288,7 +291,7 @@ p{
 
 @media @smallest{
 	.logo-overlay{
-		top: 14px;
+		top: 12px;
 	}
 
 	.player{
@@ -304,7 +307,7 @@ p{
 	}
 
 	.info-content{
-		font-size: 16px;
-		max-width: 300px;
+		font-size: 17px;
+		max-width: 280px;
 	}
 }
