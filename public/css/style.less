@@ -89,7 +89,19 @@ a{
 	color: #fff;
 	font-family: 'Fjalla One', sans-serif;
 	font-size: 20px;
-	max-width: 400px;
+	width: 400px;
+
+	@media (max-width: 401px) {
+		width: 70%;
+		margin-left: 25px;
+		font-size: 16px;
+	}
+
+	@media (max-width: 321px) {
+		width: 70%;
+		margin-left: 25px;
+		font-size: 14px;
+	}
 }
 .row{
 	height: 24%;
@@ -188,6 +200,7 @@ a{
 
 	font-family: 'Fjalla One', sans-serif;
 	font-size: 24px;
+	margin-right: 20px;
 
 	text-shadow: @bigshadow;				
 }
@@ -200,6 +213,10 @@ a{
 }
 .player-icon{
 	font-size: 28px;
+
+	@media (max-width: 401px) {
+		font-size: 20px;
+	}
 }
 
 
