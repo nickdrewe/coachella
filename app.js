@@ -16,6 +16,10 @@ app.get('/posts.json', function (req, res) {
   res.send(posts);
 });
 
+app.get('/', function(req, res){
+	res.redirect('/coachella');
+});
+
 //Server
 var port = process.env.PORT || 3000;
 var server = app.listen(port, function (req, res) {
