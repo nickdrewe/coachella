@@ -9,7 +9,7 @@ angular.module('myApp', ['unCollage', 'unPlayer'])
 			posts: []
 		};
 
-		$scope.playlist = 'https://api.soundcloud.com/playlists/92416187.json';
+		$scope.playlist = 'https://api.soundcloud.com/playlists/70386623.json';
 
 		$scope.showInfo = function(){
 			$rootScope.$broadcast('image_clicked');
