@@ -17,7 +17,7 @@ app.get('/posts.json', function (req, res) {
 });
 
 app.get('/', function(req, res){
-	res.redirect('/coachella');
+	res.redirect('http://unassigned.co/coachella');
 });
 
 //Server

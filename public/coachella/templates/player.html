@@ -1,0 +1,13 @@
+<div class="player">
+	<div class="controls" ng-if="!state.currentTrack">
+	Loading Playlist ...
+	</div>
+	<div class="controls" ng-if="state.currentTrack">
+		<a ng-href="{{state.currentTrack.permalink_url}}" target="_blank">
+			<img class="player-artwork" ng-src="{{state.currentTrack.artwork_url}}"/>
+		</a>
+		{{state.currentTrack.title | uppercase}}
+		<span class="icon-pause player-icon" ng-click="playPause()" ng-class="{ 'icon-pause':state.playing, 'icon-play':!state.playing }"></span>
+		<span class="icon-fast-forward player-icon" ng-click="nextTrack()"></span>
+	</div>
+</div>
